@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>todo list</title>
+    <script src="vue.js"></script>
+    <style type="text/css">
+        .active{
+            background-color: brown;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" v-model="itemInput" />
+        <button @click="addItem">addItem</button>
+        <ul>
+            <li v-for="item,index in todolist" @click="clickItem(index)" :class="index===currentIndex?'active':''">
+                {{item}}
+                <button @click="deleteItem(index)">deleteItem</button>
+            </li>
+        </ul>
+        <div v-if="todolist.length===0">暂无待办事项</div>
+    </div>
+
+    <script>
+        var obj = {
+            data() {
+                return {
+                    todolist: [],
+                    itemInput: "",
+                    currentIndex:0
+                }
+            },
+            methods: {
+                addItem() {
+                    if(this.itemInput==null||this.itemInput==""){
+                        return
+                    }
+                    this.todolist.push(this.itemInput)
+                    this.itemInput = ''
+                },
+                deleteItem(index) {
+                    this.todolist.splice(index, 1);
+                },
+                clickItem(index){
+                    this.currentIndex=index
+                }
+            }
+        }
+        Vue.createApp(obj).mount("#app");
+    </script>
+</body>
+
+</html>

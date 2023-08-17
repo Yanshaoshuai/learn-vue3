@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="vue.js"></script>
+  <style type="text/css">
+    .red {
+      background-color: red;
+    }
+
+    .yellow {
+      background-color: yellow;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <!-- v-bind 数据绑定-->
+    <div :class="color">{{ message }}</div>
+
+
+    <!-- v-on 事件绑定-->
+    <button @click="changeMessage()">
+      changeMessage
+    </button>
+
+    <!-- v-model 双向绑定 相当于v-bind加上v-on -->
+    <input type="text" v-model="message">
+    <button @click="changeColor()">
+      changeColor
+    </button>
+
+    <!-- v-show -->
+    <!-- <div style="display: none;">v-show</div> -->
+    <div v-show="isShow">v-show</div>
+    <button @click="isShowMethod()">
+      isShow
+    </button>
+    <!-- v-if 直接移除元素-->
+    <div v-if="ifShow">v-if</div>
+    <button @click="ifShowMethod()">
+      ifShow
+    </button>
+
+    <!-- v-for -->
+    <ul>
+      <li v-for="item,index in list">
+        {{index}}--{{item}}
+      </li>
+    </ul>
+    <!-- v-html 可以注入html {{}}显示是纯文本-->
+    <div v-html="innerHtml">
+    </div>
+
+    <!-- 计算属性和方法 -->
+    <div>
+      usernameUpperCase --- {{usernameUpperCase()}}<br/>
+      usernameUpperCase --- {{usernameUpperCase()}}<br/>
+      <!-- 计算属性有缓存改变时只重新计算一次 -->
+      computedUserName --- {{computedUserName}}<br/>
+      computedUserName --- {{computedUserName}}<br/>
+      computedDate --- {{computedDate}}
+    </div>
+  </div>
+
+
+  <script>
+    var obj = {
+      data() {
+        return {
+          message: 'hello',
+          color: "red",
+          isShow: true,
+          ifShow: true,
+          list: [11, 22, 33, 44, 55],
+          innerHtml: '<a href="https://www.baidu.com">www.baidu.com</a>',
+          username:'yanshaoshuai',
+          year:'2023',
+          month:'08',
+          day:'16'
+        }
+      },
+      methods: {
+        changeMessage() {
+          this.message = "changeMessage"
+        },
+        changeColor() {
+          this.color = "yellow"
+        },
+        isShowMethod() {
+          this.isShow = !this.isShow
+        },
+        ifShowMethod() {
+          this.ifShow = !this.ifShow
+        },
+        usernameUpperCase(){
+          console.log("usernameUpperCase");
+          return this.username.substring(0,1).toUpperCase()+this.username.substring(1);
+        }
+      },
+      computed:{
+        // 对象形式可写
+        computedDate:{
+            get(){
+              return this.year+"-"+this.month+"-"+this.day
+            },
+            set(value){
+              // this.year=value.split("-")[0];
+              // this.month=value.split("-")[1];
+              // this.day=value.split("-")[2];
+              [this.year,this.month,this.day]=value.split("-")
+            }
+        },
+        // 方法形式只读
+        computedUserName(){
+          console.log("computedUserName");
+          return this.username.substring(0,1).toUpperCase()+this.username.substring(1);
+        }
+      }
+    }
+    const app = Vue.createApp(obj).mount('#app');
+  </script>
+
+</body>
+
+</html>
