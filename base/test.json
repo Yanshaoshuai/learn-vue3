@@ -1,0 +1,19 @@
+{
+  "user": [
+    {
+      "name": "yanshaoshuai",
+      "age": 27,
+      "id": 1
+    },
+    {
+      "name": "yanshaoshuai",
+      "age": 27,
+      "id": 2
+    },
+    {
+      "name": "zhangsan",
+      "age": "100",
+      "id": 3
+    }
+  ]
+}

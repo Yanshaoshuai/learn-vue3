@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/vue.js"></script>
+    <style>
+        .red {
+            background-color: red;
+        }
+
+        .yellow {
+            background-color: yellow;
+        }
+    </style>
+</head>
+<!--fetch是浏览器支持的api不需要额外引用依赖-->
+<body>
+<div id="app">
+    <button @click="getUser">获取用户</button>
+    <br/>
+    用户名:{{users[0].name}}<br/>
+    年龄:{{users[0].age}}<br/>
+    <button @click="addUser">添加用户</button>
+    <br/>
+    <button @click="updateUser">修改用户</button>
+    <br/>
+    <button @click="deleteUser">删除用户</button>
+    <br/>
+</div>
+
+
+<script>
+    var obj = {
+        data() {
+            return {
+                users: [{
+                    name: "none",
+                    age: 0,
+                    id: 1
+                }]
+            }
+        },
+        methods: {
+            getUser: function () {
+                //get
+                fetch("http://localhost:3000/user")
+                    .then(res => res.json())
+                    .then(res => {
+                            console.log(res)
+                            this.users = res;
+                        }
+                    )
+
+            },
+            //form格式body
+            //addUser() {
+            //    fetch("http://localhost:3000/user", {
+            //        method: "post", headers: {
+            //            "content-type": "application/x-www-form-urlencoded"
+            //        },
+            //        body: "name=xiaoming&age=19"
+            //    }).then(res => res.json())
+            //        .then(res => {
+            //                console.log(res)
+            //            }
+            //        )
+            //}
+            //json格式
+            addUser() {
+                fetch("http://localhost:3000/user", {
+                    method: "post", headers: {
+                        "content-type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        name: "yanshaoshuai",
+                        age: 27,
+                    })
+                }).then(res => res.json())
+                    .then(res => {
+                            console.log(res)
+                        }
+                    )
+            },
+            updateUser() {
+                fetch("http://localhost:3000/user/1", {
+                    method: "put", headers: {
+                        "content-type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        name: "yanshaoshuai",
+                        age: 27,
+                    })
+                }).then(res => res.json())
+                    .then(res => {
+                            console.log(res)
+                        }
+                    )
+            },
+            deleteUser() {
+                fetch("http://localhost:3000/user/3", {
+                    method: "delete", headers: {
+                        "content-type": "application/json"
+                    },
+                }).then(res => res.json())
+                    .then(res => {
+                            console.log(res)
+                        }
+                    )
+            }
+        },
+        computed: {},
+        watch: {}
+    }
+    const app = Vue.createApp(obj).mount('#app');
+</script>
+
+</body>
+
+</html>

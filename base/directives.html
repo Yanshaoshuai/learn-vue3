@@ -2,55 +2,61 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <script src="vue.js"></script>
-  <style type="text/css">
-    .red {
-      background-color: red;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/vue.js"></script>
+    <style type="text/css">
+        .red {
+            background-color: red;
+        }
 
-    .yellow {
-      background-color: yellow;
-    }
-  </style>
+        .yellow {
+            background-color: yellow;
+        }
+    </style>
 </head>
 
 <body>
-  <div id="app">
+<div id="app">
     <!-- v-bind 数据绑定-->
     <div :class="color">{{ message }}</div>
 
 
     <!-- v-on 事件绑定-->
     <button @click="changeMessage()">
-      changeMessage
+        changeMessage
     </button>
 
     <!-- v-model 双向绑定 相当于v-bind加上v-on -->
     <input type="text" v-model="message">
     <button @click="changeColor()">
-      changeColor
+        changeColor
     </button>
 
     <!-- v-show -->
     <!-- <div style="display: none;">v-show</div> -->
     <div v-show="isShow">v-show</div>
     <button @click="isShowMethod()">
-      isShow
+        isShow
     </button>
     <!-- v-if 直接移除元素-->
     <div v-if="ifShow">v-if</div>
     <button @click="ifShowMethod()">
-      ifShow
+        ifShow
     </button>
+
+    <!-- v-if 和template模板结合 template不会出现在元素中-->
+    <template v-if="true">
+        <hr>
+        v-if and template
+    </template>
 
     <!-- v-for -->
     <ul>
-      <li v-for="item,index in list">
-        {{index}}--{{item}}
-      </li>
+        <li v-for="item,index in list">
+            {{index}}--{{item}}
+        </li>
     </ul>
     <!-- v-html 可以注入html {{}}显示是纯文本-->
     <div v-html="innerHtml">
@@ -58,72 +64,117 @@
 
     <!-- 计算属性和方法 -->
     <div>
-      usernameUpperCase --- {{usernameUpperCase()}}<br/>
-      usernameUpperCase --- {{usernameUpperCase()}}<br/>
-      <!-- 计算属性有缓存改变时只重新计算一次 -->
-      computedUserName --- {{computedUserName}}<br/>
-      computedUserName --- {{computedUserName}}<br/>
-      computedDate --- {{computedDate}}
+        usernameUpperCase --- {{usernameUpperCase()}}<br/>
+        usernameUpperCase --- {{usernameUpperCase()}}<br/>
+        <!-- 计算属性有缓存改变时只重新计算一次 -->
+        <!--计算属性中不要做异步操作-->
+        computedUserName --- {{computedUserName}}<br/>
+        computedUserName --- {{computedUserName}}<br/>
+        computedDate --- {{computedDate}}
     </div>
-  </div>
+    <!--watch -->
+    <!--watch中可以做异步操作-->
+    <hr/>
+    watch 监听属性值改变<br/><input type="text" v-model="watchInput"/>
+    <select v-model="watchObj.year">
+        <option value="2020" >2020</option>
+        <option value="2021">2021</option>
+        <option value="2022">2022</option>
+        <option value="2023">2022</option>
+    </select>
+    <select v-model="watchObj.month">
+        <option value="06" >06</option>
+        <option value="07">07</option>
+        <option value="08">08</option>
+    </select>
+    <select v-model="watchObj.day">
+        <option value="01" >01</option>
+        <option value="02">02</option>
+        <option value="17">17</option>
+    </select>
+</div>
 
 
-  <script>
+<script>
     var obj = {
-      data() {
-        return {
-          message: 'hello',
-          color: "red",
-          isShow: true,
-          ifShow: true,
-          list: [11, 22, 33, 44, 55],
-          innerHtml: '<a href="https://www.baidu.com">www.baidu.com</a>',
-          username:'yanshaoshuai',
-          year:'2023',
-          month:'08',
-          day:'16'
-        }
-      },
-      methods: {
-        changeMessage() {
-          this.message = "changeMessage"
-        },
-        changeColor() {
-          this.color = "yellow"
-        },
-        isShowMethod() {
-          this.isShow = !this.isShow
-        },
-        ifShowMethod() {
-          this.ifShow = !this.ifShow
-        },
-        usernameUpperCase(){
-          console.log("usernameUpperCase");
-          return this.username.substring(0,1).toUpperCase()+this.username.substring(1);
-        }
-      },
-      computed:{
-        // 对象形式可写
-        computedDate:{
-            get(){
-              return this.year+"-"+this.month+"-"+this.day
-            },
-            set(value){
-              // this.year=value.split("-")[0];
-              // this.month=value.split("-")[1];
-              // this.day=value.split("-")[2];
-              [this.year,this.month,this.day]=value.split("-")
+        data() {
+            return {
+                message: 'hello',
+                color: "red",
+                isShow: true,
+                ifShow: true,
+                list: [11, 22, 33, 44, 55],
+                innerHtml: '<a href="https://www.baidu.com">www.baidu.com</a>',
+                username: 'yanshaoshuai',
+                year: '2023',
+                month: '08',
+                day: '16',
+                watchInput: "",
+                watchObj:{
+                    year:"2023",
+                    month:"08",
+                    day:"17"
+                }
             }
         },
-        // 方法形式只读
-        computedUserName(){
-          console.log("computedUserName");
-          return this.username.substring(0,1).toUpperCase()+this.username.substring(1);
+        methods: {
+            changeMessage() {
+                this.message = "changeMessage"
+            },
+            changeColor() {
+                this.color = "yellow"
+            },
+            isShowMethod() {
+                this.isShow = !this.isShow
+            },
+            ifShowMethod() {
+                this.ifShow = !this.ifShow
+            },
+            usernameUpperCase() {
+                console.log("usernameUpperCase");
+                return this.username.substring(0, 1).toUpperCase() + this.username.substring(1);
+            }
+        },
+        computed: {
+            // 对象形式可写
+            computedDate: {
+                get() {
+                    return this.year + "-" + this.month + "-" + this.day
+                },
+                set(value) {
+                    // this.year=value.split("-")[0];
+                    // this.month=value.split("-")[1];
+                    // this.day=value.split("-")[2];
+                    [this.year, this.month, this.day] = value.split("-")
+                }
+            },
+            // 方法形式只读
+            computedUserName() {
+                console.log("computedUserName");
+                return this.username.substring(0, 1).toUpperCase() + this.username.substring(1);
+            }
+        },
+        watch: {
+            //必须和属性名称一致
+            watchInput(value, oldValue) {
+                setTimeout(() => {
+                    console.log(value, oldValue)
+                }, 2000)
+            },
+            //可以监听对象
+            watchObj:{
+                handler(value){
+                    console.log(value)
+                },
+                //深度监听
+                deep:true,
+                //页面加载时是否触发
+                immediate:true
+            }
         }
-      }
     }
     const app = Vue.createApp(obj).mount('#app');
-  </script>
+</script>
 
 </body>
 

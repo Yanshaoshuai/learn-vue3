@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/vue.js"></script>
+    <script src="js/axios.js"></script>
+    <style>
+        .red {
+            background-color: red;
+        }
+
+        .yellow {
+            background-color: yellow;
+        }
+    </style>
+</head>
+<!--axios是对xhr的封装需要单独引用依赖-->
+<body>
+<div id="app">
+    <button @click="getUser">获取用户</button>
+    <br/>
+    用户名:{{users[0].name}}<br/>
+    年龄:{{users[0].age}}<br/>
+    <button @click="addUser">添加用户</button>
+    <br/>
+    <button @click="updateUser">修改用户</button>
+    <br/>
+    <button @click="deleteUser">删除用户</button>
+    <br/>
+</div>
+
+<script>
+    var obj = {
+        data() {
+            return {
+                users: [{
+                    name: "none",
+                    age: 0,
+                    id: 1
+                }]
+            }
+        },
+        methods: {
+            getUser: function () {
+                //get
+                axios.get("http://localhost:3000/user")
+                    .then(res => {
+                        console.log(res.data)
+                        this.users = res.data;
+                    }).catch(err => {
+                    console.log(err)
+                })
+            },
+            //默认是json格式body
+            addUser() {
+                axios.post("http://localhost:3000/user", {
+                    name: "yanshaoshuai",
+                    age: 27,
+                }).then(res => {
+                        console.log(res.data)
+                    }
+                ).catch(err => {
+                    console.log(err)
+                })
+            },
+            //form格式
+            //addUser() {
+            //    axios.post("http://localhost:3000/user","name=zhangsan&age=100").then(res => {
+            //            console.log(res.data)
+            //        }
+            //    ).catch(err => {
+            //        console.log(err)
+            //    })
+            //},
+            //json格式
+            updateUser() {
+                axios.put("http://localhost:3000/user/1", {
+                    name: "yanshaoshuai",
+                    age: 27,
+                }).then(res => {
+                        console.log(res.data)
+                    }
+                ).catch(err => {
+                    console.log(err)
+                })
+            },
+            deleteUser() {
+                axios.delete("http://localhost:3000/user/3")
+                    .then(res => {
+                            console.log(res.data)
+                        }
+                    ).catch(err => {
+                    console.log(err)
+                })
+            }
+        },
+        computed: {},
+        watch: {}
+    }
+    const app = Vue.createApp(obj).mount('#app');
+</script>
+
+</body>
+
+</html>
