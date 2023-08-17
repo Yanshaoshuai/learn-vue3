@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/vue.js"></script>
+    <style>
+        .red {
+            background-color: red;
+        }
+
+        .yellow {
+            background-color: yellow;
+        }
+    </style>
+</head>
+<!--fetch是浏览器支持的api不需要额外引用依赖-->
+<body>
+<div id="app">
+    <custom-component>
+    </custom-component>
+</div>
+
+
+<script>
+    var obj = {
+        data() {
+            return {
+
+            }
+        },
+        methods: {
+        },
+        computed: {},
+        watch: {}
+    }
+    const app = Vue.createApp(obj);
+    app.component("custom-component",{
+        //全局组件 可以在任意组件模板和页面中使用
+        template:`
+            <nav style="background: yellow">
+                <ul>
+                  <li v-for="item in datalist">
+                    {{item}}
+                  </li>
+                </ul>
+            </nav>
+            <!--局部组件只能在外部组件中用-->
+            <custom-inner-component></custom-inner-component>
+        `,
+        components:{//局部组件
+          "custom-inner-component":{
+              template: `
+                <div>custom-inner-component</div>
+              `
+          }
+        },
+        data() {
+            return {
+             datalist:[1,2,3,4]
+            }
+        }
+    });
+    app.mount('#app');
+</script>
+
+</body>
+
+</html>

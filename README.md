@@ -20,3 +20,22 @@ json-server --watch .\base\test.json
 ```
 监听后会被映射成  http://localhost:3000/getUser url
 
+#### vue-cli(新项目不建议使用)
+安装
+```shell
+npm install -g @vue/cli
+#OR
+yarn global add @vue/cli
+```
+升级
+```shell
+#管理员身份运行
+npm update -g @vue/cli
+#OR
+npm uninstall -g @vue/cli --force
+npm install -g @vue/cli
+```
+使用
+```shell
+vue create projectName
+```

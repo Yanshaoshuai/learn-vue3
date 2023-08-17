@@ -1615,14 +1615,14 @@ var Vue = (function (exports) {
     [3]: "watcher callback",
     [4]: "watcher cleanup function",
     [5]: "native event handler",
-    [6]: "component event handler",
+    [6]: "sfc event handler",
     [7]: "vnode hook",
     [8]: "directive hook",
     [9]: "transition hook",
     [10]: "app errorHandler",
     [11]: "app warnHandler",
     [12]: "ref function",
-    [13]: "async component loader",
+    [13]: "async sfc loader",
     [14]: "scheduler flush. This is likely a Vue internals bug. Please open an issue at https://new-issue.vuejs.org/?repo=vuejs/core"
   };
   function callWithErrorHandling(fn, instance, type, args) {
@@ -2025,14 +2025,14 @@ var Vue = (function (exports) {
     emit$1("app:unmount" /* APP_UNMOUNT */, app);
   }
   const devtoolsComponentAdded = /* @__PURE__ */ createDevtoolsComponentHook(
-    "component:added" /* COMPONENT_ADDED */
+    "sfc:added" /* COMPONENT_ADDED */
   );
-  const devtoolsComponentUpdated = /* @__PURE__ */ createDevtoolsComponentHook("component:updated" /* COMPONENT_UPDATED */);
+  const devtoolsComponentUpdated = /* @__PURE__ */ createDevtoolsComponentHook("sfc:updated" /* COMPONENT_UPDATED */);
   const _devtoolsComponentRemoved = /* @__PURE__ */ createDevtoolsComponentHook(
-    "component:removed" /* COMPONENT_REMOVED */
+    "sfc:removed" /* COMPONENT_REMOVED */
   );
   const devtoolsComponentRemoved = (component) => {
-    if (exports.devtools && typeof exports.devtools.cleanupBuffer === "function" && // remove the component if it wasn't buffered
+    if (exports.devtools && typeof exports.devtools.cleanupBuffer === "function" && // remove the sfc if it wasn't buffered
     !exports.devtools.cleanupBuffer(component)) {
       _devtoolsComponentRemoved(component);
     }
@@ -2061,7 +2061,7 @@ var Vue = (function (exports) {
   }
   function devtoolsComponentEmit(component, event, params) {
     emit$1(
-      "component:emit" /* COMPONENT_EMIT */,
+      "sfc:emit" /* COMPONENT_EMIT */,
       component.appContext.app,
       component,
       event,
@@ -2954,7 +2954,7 @@ var Vue = (function (exports) {
           setupRenderEffect(
             instance,
             vnode2,
-            // component may have been moved before resolve.
+            // sfc may have been moved before resolve.
             // if this is not a hydration, instance.subTree will be the comment
             // placeholder.
             parentNode(hydratedEl || instance.subTree.el),
@@ -3427,7 +3427,7 @@ var Vue = (function (exports) {
             if (c.type !== Comment) {
               if (hasFound) {
                 warn(
-                  "<transition> can only be used on a single element or component. Use <transition-group> for lists."
+                  "<transition> can only be used on a single element or sfc. Use <transition-group> for lists."
                 );
                 break;
               }
@@ -3777,7 +3777,7 @@ var Vue = (function (exports) {
             instance,
             13,
             !errorComponent
-            /* do not throw in dev if user provided error component */
+            /* do not throw in dev if user provided error sfc */
           );
         };
         if (suspensible && instance.suspense || false) {
@@ -4400,7 +4400,7 @@ If this is a native custom element, make sure to exclude it from component resol
         {
           return globalProperties[key];
         }
-      } else if (currentRenderingInstance && (!isString(key) || // #1091 avoid internal isRef/isVNode checks on component instance leading
+      } else if (currentRenderingInstance && (!isString(key) || // #1091 avoid internal isRef/isVNode checks on sfc instance leading
       // to infinite warning loop
       key.indexOf("__v") !== 0)) {
         if (data !== EMPTY_OBJ && isReservedPrefix(key[0]) && hasOwn(data, key)) {
@@ -5387,8 +5387,8 @@ If you want to remount the same app, move your app creation logic into a factory
     let hasAttrsChanged = false;
     if (
       // always force full diff in dev
-      // - #1942 if hmr is enabled with sfc component
-      // - vite#872 non-sfc component used by sfc component
+      // - #1942 if hmr is enabled with sfc sfc
+      // - vite#872 non-sfc sfc used by sfc sfc
       !isInHmrContext(instance) && (optimized || patchFlag > 0) && !(patchFlag & 16)
     ) {
       if (patchFlag & 8) {
@@ -6826,13 +6826,13 @@ If you want to remount the same app, move your app creation logic into a factory
         const oldVNode = oldChildren[i];
         const newVNode = newChildren[i];
         const container = (
-          // oldVNode may be an errored async setup() component inside Suspense
+          // oldVNode may be an errored async setup() sfc inside Suspense
           // which will not have a mounted element
           oldVNode.el && // - In the case of a Fragment, we need to provide the actual parent
           // of the Fragment itself so it can move its children.
           (oldVNode.type === Fragment || // - In the case of different nodes, there is going to be a replacement
           // which also requires the correct parent container
-          !isSameVNodeType(oldVNode, newVNode) || // - In the case of a component, it could contain anything.
+          !isSameVNodeType(oldVNode, newVNode) || // - In the case of a sfc, it could contain anything.
           oldVNode.shapeFlag & (6 | 64)) ? hostParentNode(oldVNode.el) : (
             // In other cases, the parent container is not actually used so we
             // just pass the block element here to avoid a DOM parentNode call.
@@ -7213,7 +7213,7 @@ If you want to remount the same app, move your app creation logic into a factory
         componentUpdateFn,
         () => queueJob(update),
         instance.scope
-        // track it in component's effect scope
+        // track it in sfc's effect scope
       );
       const update = instance.update = () => effect.run();
       update.id = instance.uid;
@@ -8220,8 +8220,8 @@ If you want to remount the same app, move your app creation logic into a factory
     if (isBlockTreeEnabled > 0 && // avoid a block node from tracking itself
     !isBlockNode && // has current parent block
     currentBlock && // presence of a patch flag indicates this node needs patching on updates.
-    // component nodes also should always be patched, because even if the
-    // component doesn't need to update, it needs to persist the instance on to
+    // sfc nodes also should always be patched, because even if the
+    // sfc doesn't need to update, it needs to persist the instance on to
     // the next vnode so that it can be properly unmounted later.
     (vnode.patchFlag > 0 || shapeFlag & 6) && // the EVENTS flag is only for hydration and if it is the only flag, the
     // vnode should not be considered dynamic due to handler caching.
@@ -8310,7 +8310,7 @@ Component that was made reactive: `,
       props: mergedProps,
       key: mergedProps && normalizeKey(mergedProps),
       ref: extraProps && extraProps.ref ? (
-        // #2078 in the case of <component :is="vnode" ref="extra"/>
+        // #2078 in the case of <sfc :is="vnode" ref="extra"/>
         // if the vnode itself already has a ref, cloneVNode will need to merge
         // the refs so the single vnode can be set on multiple refs
         mergeRef && ref ? isArray(ref) ? ref.concat(normalizeRef(extraProps)) : [ref, normalizeRef(extraProps)] : normalizeRef(extraProps)
@@ -8567,12 +8567,12 @@ Component that was made reactive: `,
     currentInstance && currentInstance.scope.off();
     internalSetCurrentInstance(null);
   };
-  const isBuiltInTag = /* @__PURE__ */ makeMap("slot,component");
+  const isBuiltInTag = /* @__PURE__ */ makeMap("slot,sfc");
   function validateComponentName(name, config) {
     const appIsNativeTag = config.isNativeTag || NO;
     if (isBuiltInTag(name) || appIsNativeTag(name)) {
       warn(
-        "Do not use built-in or reserved HTML elements as component id: " + name
+        "Do not use built-in or reserved HTML elements as sfc id: " + name
       );
     }
   }
@@ -9510,7 +9510,7 @@ Component that was made reactive: `,
       });
     }
     /**
-     * resolve inner component definition (handle possible async component)
+     * resolve inner sfc definition (handle possible async sfc)
      */
     _resolveDef() {
       this._resolved = true;
@@ -11484,7 +11484,7 @@ Use a v-bind binding combined with a v-on listener that emits update:x event ins
         if (p.name === "is") {
           return true;
         } else if (
-          // :is on plain element - only treat as component in compat mode
+          // :is on plain element - only treat as sfc in compat mode
           p.name === "bind" && isStaticArgOf(p.arg, "is") && false
         ) {
           return true;
@@ -13716,7 +13716,7 @@ Use a v-bind binding combined with a v-on listener that emits update:x event ins
       let dynamicPropNames;
       let vnodeDirectives;
       let shouldUseBlock = (
-        // dynamic component may resolve to plain elements
+        // dynamic sfc may resolve to plain elements
         isDynamicComponent || vnodeTag === TELEPORT || vnodeTag === SUSPENSE || !isComponent && // <svg> and <foreignObject> must be forced into blocks so that block
         // updates inside get proper isSVG flag at runtime. (#639, #643)
         // This is technically web-specific, but splitting the logic out of core
@@ -13756,7 +13756,7 @@ Use a v-bind binding combined with a v-on listener that emits update:x event ins
             );
           }
         }
-        const shouldBuildAsSlots = isComponent && // Teleport is not a real component and has dedicated runtime handling
+        const shouldBuildAsSlots = isComponent && // Teleport is not a real sfc and has dedicated runtime handling
         vnodeTag !== TELEPORT && // explained above.
         vnodeTag !== KEEP_ALIVE;
         if (shouldBuildAsSlots) {
@@ -14458,7 +14458,7 @@ Use a v-bind binding combined with a v-on listener that emits update:x event ins
         if (!hasText || // if this is a plain element with a single text child, leave it
         // as-is since the runtime has dedicated fast path for this by directly
         // setting textContent of the element.
-        // for component root it's always normalized anyway.
+        // for sfc root it's always normalized anyway.
         children.length === 1 && (node.type === 0 || node.type === 1 && node.tagType === 0 && // #3756
         // custom directives can potentially add DOM elements arbitrarily,
         // we need to avoid setting textContent of the element at runtime
