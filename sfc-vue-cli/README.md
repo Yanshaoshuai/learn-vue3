@@ -1,4 +1,4 @@
-# sfc
+# sfc (vue-cli项目)
 
 ## Project setup
 ```
