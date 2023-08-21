@@ -4267,7 +4267,7 @@ If this is a native custom element, make sure to exclude it from component resol
     const rendered = createBlock(
       Fragment,
       {
-        key: props.key || // slot content array of a dynamic conditional slot may have a branch
+        key: props.key || // slot content array of a dynamic-component conditional slot may have a branch
         // key attached in the `createSlots` helper, respect that
         validSlotContent && validSlotContent.key || `_${name}`
       },
@@ -8224,7 +8224,7 @@ If you want to remount the same app, move your app creation logic into a factory
     // sfc-vue-cli doesn't need to update, it needs to persist the instance on to
     // the next vnode so that it can be properly unmounted later.
     (vnode.patchFlag > 0 || shapeFlag & 6) && // the EVENTS flag is only for hydration and if it is the only flag, the
-    // vnode should not be considered dynamic due to handler caching.
+    // vnode should not be considered dynamic-component due to handler caching.
     vnode.patchFlag !== 32) {
       currentBlock.push(vnode);
     }
@@ -10600,7 +10600,7 @@ Make sure to use the production build (*.prod.js) when deploying for production.
     [23]: "Invalid end tag.",
     [24]: "Element is missing end tag.",
     [25]: "Interpolation end sign was not found.",
-    [27]: "End bracket for dynamic directive argument was not found. Note that dynamic directive argument cannot contain spaces.",
+    [27]: "End bracket for dynamic-component directive argument was not found. Note that dynamic-component directive argument cannot contain spaces.",
     [26]: "Legal directive name was expected.",
     // transform errors
     [28]: `v-if/v-else-if is missing expression.`,
@@ -13636,7 +13636,7 @@ Use a v-bind binding combined with a v-on listener that emits update:x event ins
       slotsProperties.concat(
         createObjectProperty(
           `_`,
-          // 2 = compiled but dynamic = can skip normalization, but must run diff
+          // 2 = compiled but dynamic-component = can skip normalization, but must run diff
           // 1 = compiled and static = can skip normalization AND diff as optimized
           createSimpleExpression(
             slotFlag + (` /* ${slotFlagsText[slotFlag]} */` ),
@@ -13716,7 +13716,7 @@ Use a v-bind binding combined with a v-on listener that emits update:x event ins
       let dynamicPropNames;
       let vnodeDirectives;
       let shouldUseBlock = (
-        // dynamic sfc-vue-cli may resolve to plain elements
+        // dynamic-component sfc-vue-cli may resolve to plain elements
         isDynamicComponent || vnodeTag === TELEPORT || vnodeTag === SUSPENSE || !isComponent && // <svg> and <foreignObject> must be forced into blocks so that block
         // updates inside get proper isSVG flag at runtime. (#639, #643)
         // This is technically web-specific, but splitting the logic out of core
@@ -13959,7 +13959,7 @@ Use a v-bind binding combined with a v-on listener that emits update:x event ins
           continue;
         }
         if (
-          // #938: elements with dynamic keys should be forced into blocks
+          // #938: elements with dynamic-component keys should be forced into blocks
           isVBind && isStaticArgOf(arg, "key") || // inline before-update hooks need to force block so that it is invoked
           // before children
           isVOn && hasChildren && isStaticArgOf(arg, "vue:before-update")
@@ -14086,7 +14086,7 @@ Use a v-bind binding combined with a v-on listener that emits update:x event ins
               );
             }
             if (styleProp && // the static style is compiled into an object,
-            // so use `hasStyleBinding` to ensure that it is a dynamic style binding
+            // so use `hasStyleBinding` to ensure that it is a dynamic-component style binding
             (hasStyleBinding || styleProp.value.type === 4 && styleProp.value.content.trim()[0] === `[` || // v-bind:style and style both exist,
             // v-bind:style with static literal object
             styleProp.value.type === 17)) {
@@ -15026,7 +15026,7 @@ Use a v-bind binding combined with a v-on listener that emits update:x event ins
           JSON.stringify(nonKeyModifiers)
         ]);
       }
-      if (keyModifiers.length && // if event name is dynamic, always wrap with keys guard
+      if (keyModifiers.length && // if event name is dynamic-component, always wrap with keys guard
       (!isStaticExp(key) || isKeyboardEvent(key.content))) {
         handlerExp = createCallExpression(context.helper(V_ON_WITH_KEYS), [
           handlerExp,
