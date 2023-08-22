@@ -12,7 +12,7 @@ npm create vite@latest
 ```
 ##### 运行项目
 ```shell
-cd vite-project
+cd vite-voa
 npm install
 npm run dev
 ```
