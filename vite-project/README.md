@@ -16,3 +16,8 @@ cd vite-project
 npm install
 npm run dev
 ```
+
+#### 安装依赖并保存到package.json
+```shell
+npm install axios --save
+```
