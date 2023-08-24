@@ -11,3 +11,8 @@ This template should help get you started developing with Vue 3 in Vite. The tem
 ```shell
 npm install --save vuex-persistedstate
 ```
+
+#### pinia安装
+```shell
+npm install pinia --save
+```
