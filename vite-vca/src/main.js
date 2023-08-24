@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
-import App from '../../vite-voa/src/vuex/views/App.vue'
-import  router from './vuex//router'
+import App from './vuex/views/App.vue'
+import  router from './vuex/router'
 import store from './vuex/store'
 
 const app=createApp(App);

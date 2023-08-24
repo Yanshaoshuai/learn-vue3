@@ -22,7 +22,7 @@ export default {
     <!--预留插槽 路由容器 可以有多个-->
     <router-view></router-view>
     <!--<Tabbar v-show="$store.state.isTabbarShow"></Tabbar>-->
-    <!--<Tabbar v-show="$store.TabbarModule.state.isTabbarShow"></Tabbar>-->
+    <!--<Tabbar v-show="$store.state.TabbarModule.isTabbarShow"></Tabbar>-->
     <Tabbar v-show="isTabbarShow"></Tabbar>
   </div>
 
