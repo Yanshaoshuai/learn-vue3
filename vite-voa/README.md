@@ -31,3 +31,7 @@ npm install vue-router@4 --save
 ```shell
 npm install sass --save
 ```
+#### 安装 vuex
+```shell
+ npm install vuex@next --save
+```
