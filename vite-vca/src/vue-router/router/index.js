@@ -6,6 +6,7 @@ import Center from "../views/Center.vue";
 import NotFound from "../views/NotFound.vue";
 import NowPlaying from "../views/films/NowPlaying.vue";
 import CommingSoon from "../views/films/CommingSoon.vue";
+import Detail from "../views/films/Detail.vue";
 
 const routes=[
     {
@@ -29,6 +30,16 @@ const routes=[
             }
         ]
     },
+    {
+        path:"/detail/:filmId",
+        name:'detail',
+        component:Detail
+    },
+    //{//匹配?传参
+    //    path:"/detail",
+    //    name:'detail',
+    //    component:Detail
+    //},
     {
         path:"/cinemas",
         component:Cinemas
