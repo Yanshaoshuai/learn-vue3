@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 //import App from './App.vue'
-import App from './inner-component/App.vue'
+import App from './vue-router/views/App.vue'
+import  router from '../../vite-voa/src/vue-router/router'
 
 const  app=createApp(App);
 //全局自定义指令
@@ -9,4 +10,6 @@ const  app=createApp(App);
 //        el.style.background='yellow'
 //    }
 //})
+
+app.use(router)
 app.mount('#app');

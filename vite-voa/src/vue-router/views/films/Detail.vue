@@ -1,31 +1,29 @@
-<script setup>
+<script>
+export default {
   //路由更新钩子
-  import {onBeforeRouteUpdate, useRoute, useRouter} from "vue-router";
-  import {onMounted} from "vue";
-  let router=useRouter();
-  let route=useRoute();
-  onBeforeRouteUpdate((to,from)=>{
+  beforeRouteUpdate(to,from) {
     console.log(from.params.filmId)
     console.log(to.params.filmId)
-  })
-
-  onMounted(()=>{
+  },
+  mounted() {
     //获取id /detail/:filmId
-    let filmId = route.params.filmId;
+    let filmId = this.$route.params.filmId;
     //获取query参数
-    //let filmId = route.query.filmId;
+    //let filmId = this.$route.query.filmId;
     console.log(filmId)
-  })
-  const handleBack=()=>{
-    //返回上一级
-    router.back()
-    //前进
-    //router.forward()
-    //回退N个
-    //router.go(-1)
-  }
-  const handleClick=()=>{
-    router.push('/detail/6789')
+  },
+  methods: {
+    handleBack() {
+      //返回上一级
+      this.$router.back()
+      //前进
+      //this.$router.forward()
+      //回退N个
+      //this.$router.go(-1)
+    },
+    handleClick() {
+      this.$router.push('/detail/6789')
+    }
   }
   //,
   //watch:{
@@ -34,6 +32,7 @@
   //    console.log("猜你喜欢filmId",this.$route.params.filmId)
   //  }
   //}
+}
 </script>
 
 <template>

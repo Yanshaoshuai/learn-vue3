@@ -21,3 +21,13 @@ npm run dev
 ```shell
 npm install axios --save
 ```
+
+#### 安装路由模块
+```shell
+npm install vue-router@4 --save
+```
+
+#### 安装saas
+```shell
+npm install sass --save
+```
