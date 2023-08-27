@@ -7,6 +7,7 @@ import NowPlaying from "../views/films/NowPlaying.vue";
 import CommingSoon from "../views/films/CommingSoon.vue";
 import Detail from "../views/films/Detail.vue";
 import Login from "../views/Login.vue";
+import City from "../views/City.vue";
 
 const routes=[
     {
@@ -39,6 +40,11 @@ const routes=[
         path:"/detail/:filmId",
         name:'detail',
         component:Detail
+    },
+    {
+        path:"/city",
+        name:'city',
+        component:City
     },
     //{//匹配?传参
     //    path:"/detail",

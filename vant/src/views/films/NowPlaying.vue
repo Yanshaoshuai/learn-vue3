@@ -1,31 +1,21 @@
 <script setup>
+import {List as vanList, Cell as vanCell} from 'vant';
 import axios from "axios";
 import {onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
 
 let datalist = ref([])
-let router=useRouter()
+let loading = ref(false);
+let finished = ref(false);
+const pageNum = ref(1)
+const total=ref(0)
+let router = useRouter()
 let handleClick = (id) => {
-  //location.href='#/detail/'+id
-  //编程式导航
   router.push('/detail/' + id);
-  //对象
-  //router.push({
-  //  name: 'detail',
-  //  params: {
-  //    filmId: id
-  //  }
-  //});
-
-  //命名路由 加上参数让路由建立url
-  //router.push({name:'user',params:{username:'yan'}});
-
-  //带查询参数 /register?plan=private
-  //router.push({path:'/detail',query:{filmId:id}});
 }
 onMounted(async () => {
   let res = await axios({
-    url: "https://m.maizuo.com/gateway?cityId=310100&pageNum=1&pageSize=10&type=1&k=5887160",
+    url: `https://m.maizuo.com/gateway?cityId=310100&pageNum=1&pageSize=10&type=1&k=5887160`,
     headers: {
       "X-Client-Info":
           '{"a":"3000","ch":"1002","v":"5.2.1","e":"16928101985697188218798081","bc":"310100"}',
@@ -33,24 +23,46 @@ onMounted(async () => {
           "mall.film-ticket.film.list"
     }
   });
-  datalist.value= res.data.data.films;
+  datalist.value = res.data.data.films;
+  total.value=res.data.data.total;
 })
+
+const onLoad = async () => {
+  if(total.value===datalist.value.length){
+    finished.value=true
+    return
+  }
+  pageNum.value++
+  let res = await axios({
+    url: `https://m.maizuo.com/gateway?cityId=310100&pageNum=${pageNum.value}&pageSize=10&type=1&k=5887160`,
+    headers: {
+      "X-Client-Info":
+          '{"a":"3000","ch":"1002","v":"5.2.1","e":"16928101985697188218798081","bc":"310100"}',
+      "X-Host":
+          "mall.film-ticket.film.list"
+    }
+  });
+  datalist.value=[...datalist.value,...res.data.data.films];
+  loading.value=false;
+}
 </script>
 
 <template>
   <div>
-    <ul>
-      <!--<router-link custom :to="'/detail/'+item.filmId" v-slot="{navigate}" v-for="item in datalist" :key="item.filmId">-->
-      <!--  <li @click="navigate">-->
-      <!--    {{item.name}}-->
-      <!--  </li>-->
-      <!--</router-link>-->
-
-      <!--编程式导航-->
-      <li v-for="item in datalist" :key="item.filmId" @click="handleClick(item.filmId)">
-        {{ item.name }}
-      </li>
-    </ul>
+    <van-list
+        v-model:loading="loading"
+        :finished="finished"
+        finished-text="没有更多了"
+        @load="onLoad"
+        :immediate-check="false"
+        offset="10"
+        flex-direction: column
+    >
+      <van-cell v-for="item in datalist" :key="item.filmId" @click="handleClick(item.filmId)">
+        <img :src="item.poster" style="width: 100px;float: left"/>
+        <div>{{ item.name }}</div>
+      </van-cell>
+    </van-list>
   </div>
 
 </template>
@@ -60,5 +72,11 @@ ul {
   li {
     padding: 10px;
   }
+}
+
+//覆盖组件的class vue提供的写法
+//深度选择器
+:deep(.van-cell__value) {
+  text-align: left;
 }
 </style>
